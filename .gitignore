@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# macOS
+.DS_Store
+
+# Nuke working files
+*.nk
+*.nk~
+*.nk.autosave
+
+# Markdown (only README.md is public)
+*.md
+!README.md
+
+# Editor / AI tooling
+.claude/
+.cursor/
+.codex/
+.code-review/
+.plan/
+
+# Local-only modules
+precomp_switcher/reload.py
+fake_pipeline/
+
+# Local-only project material
+docs/
+docs_pdf/
+output/
+images/
+marketing/
+
+# Release / media artifacts
+*.pdf
+*.zip
+*.mp4
+*.mov
+*.exr
+*.abc
