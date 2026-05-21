@@ -467,6 +467,15 @@ except ImportError:
     from PySide2 import QtWidgets, QtCore, QtGui
 
 
+def _qfont_set_weight_demi_bold(font):
+    """Set demi-bold weight on PySide6 (QFont.Weight enum) and PySide2 (int)."""
+    weight_enum = getattr(getattr(QtGui.QFont, "Weight", None), "DemiBold", None)
+    if weight_enum is not None:
+        font.setWeight(weight_enum)
+        return
+    font.setWeight(QtGui.QFont.DemiBold)
+
+
 def _qt_palette_color(role, fallback, group=None):
     app = QtWidgets.QApplication.instance()
     if app is None:
@@ -1751,6 +1760,9 @@ class PrecompSettingsDialog(QtWidgets.QDialog):
         )
         for btn, write_type in button_styles:
             palette = PRECOMP_WRITE_TYPE_BUTTON_STYLES[write_type]
+            btn_font = QtGui.QFont(btn.font())
+            _qfont_set_weight_demi_bold(btn_font)
+            btn.setFont(btn_font)
             btn.setStyleSheet(
                 f"""
                 QPushButton {{
@@ -1759,7 +1771,6 @@ class PrecompSettingsDialog(QtWidgets.QDialog):
                     border: 1px solid #555555;
                     border-radius: 6px;
                     padding: 4px 12px;
-                    font-weight: 600;
                 }}
                 QPushButton:checked {{
                     background-color: {palette['checked_bg']};
