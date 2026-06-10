@@ -3,6 +3,8 @@
 by [Tony Lyons](https://github.com/CreativeLyons) |  www.compositingmentor.com
 # Precomp Switcher
 
+[Demo Video - YouTube](https://youtu.be/JJF5KJ4bihk?si=JbL-QYPFZHjulCVC)
+
 The Precomp Switcher lets you define important settings of your Write node quickly and intuitively, and creates a **Write + Switch + Backdrop** setup.
 
 There are clear labels and colors, always letting you know the current **"State"** of the precomp.
