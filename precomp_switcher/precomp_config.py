@@ -41,7 +41,7 @@ PRECOMP_LOCALIZATION_FEATURES_ENABLED = False
 # Turn on postage stamp thumbnails for Reads created from a Write.
 # True enabled postage stamp thumbnails for created Reads.
 # False disables postage stamp thumbnails for created Reads off.
-READ_POSTAGE_STAMP = False
+READ_POSTAGE_STAMP = True
 
 # Show the full resolved output path in the Precomp Settings dialog.
 # True shows the full output path under the write name preview.
@@ -107,7 +107,7 @@ UNDERSCORE_BETWEEN_WRITE_NODENAME_AND_PRECOMP_NAME = True
 # there add your {precomp_name} file
 # "{script_dir}/../../render/output/{precomp_name}.####.{ext}"
 
-WRITE_FILE_TEMPLATE = "{script_dir}/render/{precomp_name}{ver}/{precomp_name}{ver}.####.{ext}"
+WRITE_FILE_TEMPLATE = "{script_dir}/../renders/precomp/{precomp_name}{ver}/{precomp_name}{ver}.####.{ext}"
 
 # ---------------------------------------------------------------------------
 # PIPELINE SETUP

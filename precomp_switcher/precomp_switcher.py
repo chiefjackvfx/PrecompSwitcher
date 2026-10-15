@@ -467,15 +467,6 @@ except ImportError:
     from PySide2 import QtWidgets, QtCore, QtGui
 
 
-def _qfont_set_weight_demi_bold(font):
-    """Set demi-bold weight on PySide6 (QFont.Weight enum) and PySide2 (int)."""
-    weight_enum = getattr(getattr(QtGui.QFont, "Weight", None), "DemiBold", None)
-    if weight_enum is not None:
-        font.setWeight(weight_enum)
-        return
-    font.setWeight(QtGui.QFont.DemiBold)
-
-
 def _qt_palette_color(role, fallback, group=None):
     app = QtWidgets.QApplication.instance()
     if app is None:
@@ -1760,9 +1751,6 @@ class PrecompSettingsDialog(QtWidgets.QDialog):
         )
         for btn, write_type in button_styles:
             palette = PRECOMP_WRITE_TYPE_BUTTON_STYLES[write_type]
-            btn_font = QtGui.QFont(btn.font())
-            _qfont_set_weight_demi_bold(btn_font)
-            btn.setFont(btn_font)
             btn.setStyleSheet(
                 f"""
                 QPushButton {{
@@ -1771,6 +1759,7 @@ class PrecompSettingsDialog(QtWidgets.QDialog):
                     border: 1px solid #555555;
                     border-radius: 6px;
                     padding: 4px 12px;
+                    font-weight: 600;
                 }}
                 QPushButton:checked {{
                     background-color: {palette['checked_bg']};
@@ -3076,7 +3065,9 @@ def _create_read_node_for_fallback(write_node):
 def _create_basic_read_from_write(write_node):
     """Create a simple matching plate-read-family node from a Write node's output path."""
     read = _create_read_node_for_fallback(write_node)
-    path = write_node["file"].evaluate()
+    # Preserve sequence tokens (#### / %04d). evaluate() resolves them to
+    # the current frame, making the Read point at a single image instead.
+    path = write_node["file"].value()
     if not _node_has_file_knob(read):
         raise RuntimeError(
             f"created fallback read node {read.name()} has no file knob"
@@ -3110,6 +3101,13 @@ def _create_basic_read_from_write(write_node):
         int(round(write_node.xpos())), int(round(write_node.ypos() + 80 + y_adjust))
     )
     _reload_read_node(read)
+    # File parsing/reload can leave the original range at 1-1. Keep it in
+    # sync with the frame range assigned above, after the file is reloaded.
+    for original_name, range_name in (("origfirst", "first"), ("origlast", "last")):
+        original_knob = read.knob(original_name)
+        range_knob = read.knob(range_name)
+        if original_knob is not None and range_knob is not None:
+            original_knob.setValue(int(range_knob.value()))
     return read
 
 

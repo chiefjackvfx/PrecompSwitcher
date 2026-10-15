@@ -10,9 +10,10 @@ __pycache__/
 *.nk~
 *.nk.autosave
 
-# Markdown (only README.md is public)
+# Markdown (only README.md and CHANGELOG.md are public)
 *.md
 !README.md
+!CHANGELOG.md
 
 # Editor / AI tooling
 .claude/
